@@ -89,6 +89,7 @@ namespace com.apthai.APTimeStamp.Controllers
                         valid = false
                     };
                 }
+
                 Model.APFamilyModel.EmpProfile empProfile = _UserRepository.GetEmpProfile(Result.EmployeeID);
                 if (empProfile == null)
                 {
