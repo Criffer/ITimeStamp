@@ -50,6 +50,7 @@ namespace com.apthai.APTimeStamp.Controllers
             string contentType;
             if (!provider.TryGetContentType(fileName, out contentType))
             {
+
                 contentType = "application/octet-stream";
             }
             return contentType;
