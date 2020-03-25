@@ -33,13 +33,14 @@ namespace com.apthai.APTimeStamp.Controllers
         //private List<MStorageServer> _QISStorageServer;
         protected AppSettings _appSetting;
 
-        public BaseController() {
+        public BaseController()
+        {
 
 
-            _hostingEnvironment  = UtilsProvider.HostingEnvironment;
+            _hostingEnvironment = UtilsProvider.HostingEnvironment;
             _config = UtilsProvider.Config;
             _appSetting = UtilsProvider.AppSetting;
-            _unitOfWork = new UnitOfWork(_hostingEnvironment, _config);          
+            _unitOfWork = new UnitOfWork(_hostingEnvironment, _config);
 
         }
 
@@ -55,49 +56,5 @@ namespace com.apthai.APTimeStamp.Controllers
             }
             return contentType;
         }
-
-
-
-        [ApiExplorerSettings(IgnoreApi = true)]
-        public async Task<string> GetQISResourceStoragePhysicalPathAsync(int? StorageServerId)
-        {
-
-            return await GetQISResourceStoragePhysicalPathAsync(StorageServerId, null);
-
-        }
-
-        //[ApiExplorerSettings(IgnoreApi = true)]
-        //public async Task<String> GetQISResourceStoragePhysicalPathAsync(int? StorageServerId, string FilePath)
-        //{
-
-        //    string path = "";
-        //    //string baserootPath = _appSetting.PictureRootURL;
-        //    string baserootPath = Environment.GetEnvironmentVariable("PictureRootURL");
-        //    path = baserootPath + FilePath;
-        //    //if (!StorageServerId.HasValue)
-        //    //    return path;
-
-        //    //if (_QISStorageServer == null)
-        //    //{
-        //    //    var dtServer =  await _unitOfWork.MasterRepository.GetStorageServer();
-        //    //    _QISStorageServer = dtServer.ToList();
-        //    //}
-
-        //    //var storageServer = _QISStorageServer.Where(e => e.StorageServerId == StorageServerId).FirstOrDefault();
-
-        //    //if (storageServer != null)
-        //    //{
-        //    //    if (string.IsNullOrEmpty(FilePath))
-        //    //        path = storageServer.StoragePhysicalPath.TrimEnd('\\');
-        //    //    else
-        //    //        path = string.Format("{0}\\{1}", storageServer.StoragePhysicalPath.TrimEnd('\\'), FilePath.TrimStart('\\'));
-        //    //}
-        //    return path;
-
-        //}
-
-
     }
-
-  
 }

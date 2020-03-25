@@ -35,171 +35,171 @@ namespace com.apthai.APTimeStamp.Controllers
             _UserRepository = userRepository;
         }
 
-        [HttpPost]
-        [Route("login")]
-        [SwaggerOperation(Summary = "Log In เข้าสู้ระบบเพื่อรับ Access Key ",
-        Description = "Access Key ใช้ในการเรียหใช้ Function ต่างๆ เพื่อไม่ให้ User Login หลายเครื่องในเวลาเดียวกัน")]
-        public async Task<object> PostLogin([FromBody] LoginData data)
-        {
-            try
-            {
-                var userName = data.UserName;
-                var password = data.Password;
-                var appCode = data.AppCode;
+       // [HttpPost]
+       // [Route("login")]
+       // [SwaggerOperation(Summary = "Log In เข้าสู้ระบบเพื่อรับ Access Key ",
+       // Description = "Access Key ใช้ในการเรียหใช้ Function ต่างๆ เพื่อไม่ให้ User Login หลายเครื่องในเวลาเดียวกัน")]
+       // public async Task<object> PostLogin([FromBody] LoginData data)
+       // {
+       //     try
+       //     {
+       //         var userName = data.UserName;
+       //         var password = data.Password;
+       //         var appCode = data.AppCode;
 
-                string APApiKey = Environment.GetEnvironmentVariable("API_Key");
-                if (APApiKey == null)
-                {
-                    APApiKey = UtilsProvider.AppSetting.ApiKey;
-                }
-                string APApiToken = Environment.GetEnvironmentVariable("Api_Token");
-                if (APApiToken == null)
-                {
-                    APApiToken = UtilsProvider.AppSetting.ApiToken;
-                }
+       //         string APApiKey = Environment.GetEnvironmentVariable("API_Key");
+       //         if (APApiKey == null)
+       //         {
+       //             APApiKey = UtilsProvider.AppSetting.ApiKey;
+       //         }
+       //         string APApiToken = Environment.GetEnvironmentVariable("Api_Token");
+       //         if (APApiToken == null)
+       //         {
+       //             APApiToken = UtilsProvider.AppSetting.ApiToken;
+       //         }
 
-                var client = new HttpClient();
-                var Content = new StringContent(JsonConvert.SerializeObject(data));
-                Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                Content.Headers.Add("api_key", APApiKey);
-                Content.Headers.Add("api_token", APApiToken);
-                string PostURL = Environment.GetEnvironmentVariable("AuthenticationURL");
-                if (PostURL == null)
-                {
-                    PostURL = UtilsProvider.AppSetting.AuthorizeURL;
-                }
-                var Respond = await client.PostAsync(PostURL, Content);
-                if (Respond.StatusCode != System.Net.HttpStatusCode.OK)
-                {
-                    return new
-                    {
-                        success = false,
-                        data = new AutorizeDataJWT(),
-                        valid = false
-                    };
-                }
-                var RespondData = await Respond.Content.ReadAsStringAsync();
-                var Result = JsonConvert.DeserializeObject<AutorizeDataJWT>(RespondData);
-                if (Result.LoginResult == false)
-                {
-                    return new
-                    {
-                        success = false,
-                        data = Result.LoginResultMessage,
-                        valid = false
-                    };
-                }
+       //         var client = new HttpClient();
+       //         var Content = new StringContent(JsonConvert.SerializeObject(data));
+       //         Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+       //         Content.Headers.Add("api_key", APApiKey);
+       //         Content.Headers.Add("api_token", APApiToken);
+       //         string PostURL = Environment.GetEnvironmentVariable("AuthenticationURL");
+       //         if (PostURL == null)
+       //         {
+       //             PostURL = UtilsProvider.AppSetting.AuthorizeURL;
+       //         }
+       //         var Respond = await client.PostAsync(PostURL, Content);
+       //         if (Respond.StatusCode != System.Net.HttpStatusCode.OK)
+       //         {
+       //             return new
+       //             {
+       //                 success = false,
+       //                 data = new AutorizeDataJWT(),
+       //                 valid = false
+       //             };
+       //         }
+       //         var RespondData = await Respond.Content.ReadAsStringAsync();
+       //         var Result = JsonConvert.DeserializeObject<AutorizeDataJWT>(RespondData);
+       //         if (Result.LoginResult == false)
+       //         {
+       //             return new
+       //             {
+       //                 success = false,
+       //                 data = Result.LoginResultMessage,
+       //                 valid = false
+       //             };
+       //         }
 
-                Model.APFamilyModel.EmpProfile empProfile = _UserRepository.GetEmpProfile(Result.EmployeeID);
-                if (empProfile == null)
-                {
-                    Model.APFamilyModel.EmpProfile emp = new Model.APFamilyModel.EmpProfile();
-                    emp.EmpCode = Result.EmployeeID;
-                    emp.EmpDeviceID = data.DeviceID;
-                    emp.EmpName = Result.FirstName;
-                    emp.EmpLastName = Result.LastName;
-                    emp.PositionName = Result.Division;
-                    emp.EMail = Result.Email;
-                }
-                else
-                {
-                    if (data.DeviceID == empProfile.EmpDeviceID)
-                    {
+       //         Model.APFamilyModel.EmpProfile empProfile = _UserRepository.GetEmpProfile(Result.EmployeeID);
+       //         if (empProfile == null)
+       //         {
+       //             Model.APFamilyModel.EmpProfile emp = new Model.APFamilyModel.EmpProfile();
+       //             emp.EmpCode = Result.EmployeeID;
+       //             emp.EmpDeviceID = data.DeviceID;
+       //             emp.EmpName = Result.FirstName;
+       //             emp.EmpLastName = Result.LastName;
+       //             emp.PositionName = Result.Division;
+       //             emp.EMail = Result.Email;
+       //         }
+       //         else
+       //         {
+       //             if (data.DeviceID == empProfile.EmpDeviceID)
+       //             {
 
-                    }
-                }
-                //AccessKeyControl AC = _UserRepository.GetUserAccessKey(Result.EmployeeID);
-                //if (AC == null)
-                //{
-                //    AccessKeyControl accessKeyControl = new AccessKeyControl();
-                //    accessKeyControl.EmpCode = Result.EmployeeID;
-                //    accessKeyControl.AccessKey = generateAccessKey(Result.EmployeeID);
-                //    accessKeyControl.LoginDate = DateTime.Now;
+       //             }
+       //         }
+       //         //AccessKeyControl AC = _UserRepository.GetUserAccessKey(Result.EmployeeID);
+       //         //if (AC == null)
+       //         //{
+       //         //    AccessKeyControl accessKeyControl = new AccessKeyControl();
+       //         //    accessKeyControl.EmpCode = Result.EmployeeID;
+       //         //    accessKeyControl.AccessKey = generateAccessKey(Result.EmployeeID);
+       //         //    accessKeyControl.LoginDate = DateTime.Now;
 
-                //    bool Insert = _UserRepository.InsertUserAccessKey(accessKeyControl);
+       //         //    bool Insert = _UserRepository.InsertUserAccessKey(accessKeyControl);
 
-                //    return new
-                //    {
-                //        success = true,
-                //        data = Result,
-                //        AccessKey = accessKeyControl.AccessKey,
-                //        valid = false
-                //    };
-                //}
-                //else
-                //{
-                //    AC.AccessKey = generateAccessKey(Result.EmployeeID);
-                //    AC.LoginDate = DateTime.Now;
+       //         //    return new
+       //         //    {
+       //         //        success = true,
+       //         //        data = Result,
+       //         //        AccessKey = accessKeyControl.AccessKey,
+       //         //        valid = false
+       //         //    };
+       //         //}
+       //         //else
+       //         //{
+       //         //    AC.AccessKey = generateAccessKey(Result.EmployeeID);
+       //         //    AC.LoginDate = DateTime.Now;
 
-                //    bool Update = _UserRepository.UpdateUserAccessKey(AC);
+       //         //    bool Update = _UserRepository.UpdateUserAccessKey(AC);
 
-                //    return new
-                //    {
-                //        success = true,
-                //        data = Result,
-                //        AccessKey = AC.AccessKey,
-                //        valid = false
-                //    };
-                //}
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "Internal server error :: " + ex.Message);
-            }
-        }
+       //         //    return new
+       //         //    {
+       //         //        success = true,
+       //         //        data = Result,
+       //         //        AccessKey = AC.AccessKey,
+       //         //        valid = false
+       //         //    };
+       //         //}
+       //     }
+       //     catch (Exception ex)
+       //     {
+       //         return StatusCode(500, "Internal server error :: " + ex.Message);
+       //     }
+       // }
 
-        [HttpPost]
-        [Route("CheckPIN")]
-        [SwaggerOperation(Summary = "Register User เพื่อใช่ระบบ ซึ่งจะไป หาข้อมูลจากระบบ CRM",
-       Description = "Access Key ใช้ในการเรียหใช้ Function ต่างๆ เพื่อไม่ให้ User Login หลายเครื่องในเวลาเดียวกัน")]
-        public async Task<object> PostLogin([FromBody]CheckPinParam data)
-        {
-            try
-            {
-                StringValues api_key;
-                StringValues EmpCode;
+       // [HttpPost]
+       // [Route("CheckPIN")]
+       // [SwaggerOperation(Summary = "Register User เพื่อใช่ระบบ ซึ่งจะไป หาข้อมูลจากระบบ CRM",
+       //Description = "Access Key ใช้ในการเรียหใช้ Function ต่างๆ เพื่อไม่ให้ User Login หลายเครื่องในเวลาเดียวกัน")]
+       // public async Task<object> PostLogin([FromBody]CheckPinParam data)
+       // {
+       //     try
+       //     {
+       //         StringValues api_key;
+       //         StringValues EmpCode;
 
-                //Model.CRMWeb.Contact cRMContact = _UserRepository.GetCRMContactByIDCardNO(data.CitizenIdentityNo);
-                //if (cRMContact == null)
-                //{
-                //    return new
-                //    {
-                //        success = false,
-                //        data = new AutorizeDataJWT(),
-                //        message = "Only AP Customer Can Regist to the System !!"
-                //    };
-                //}
-                VerifyPINReturnObj cSUserProfile = _UserRepository.GetUserLogin_Mobile(data.PINCode, data.AccessKey);
-                if (cSUserProfile == null)
-                {
-                    return new
-                    {
-                        success = false,
-                        data = new AutorizeDataJWT(),
-                        message = "Cannot Find the Matach Data"
-                    };
-                }
-                else
-                {
-                    Model.CRMMobile.UserLogin userLogin = _UserRepository.GetUserLoginByID_Mobile(cSUserProfile.UserLoginID);
-                    string GenerateAccessToken = SHAHelper.ComputeHash(data.DeviceID, "SHA512", null);
-                    userLogin.UserToken = GenerateAccessToken;
-                    cSUserProfile.UserToken = GenerateAccessToken;
-                    bool UpdateUserToken = _UserRepository.UpdateCSUserLogin(userLogin);
+       //         //Model.CRMWeb.Contact cRMContact = _UserRepository.GetCRMContactByIDCardNO(data.CitizenIdentityNo);
+       //         //if (cRMContact == null)
+       //         //{
+       //         //    return new
+       //         //    {
+       //         //        success = false,
+       //         //        data = new AutorizeDataJWT(),
+       //         //        message = "Only AP Customer Can Regist to the System !!"
+       //         //    };
+       //         //}
+       //         //VerifyPINReturnObj cSUserProfile = _UserRepository.GetUserLogin_Mobile(data.PINCode, data.AccessKey);
+       //         //if (cSUserProfile == null)
+       //         //{
+       //         //    return new
+       //         //    {
+       //         //        success = false,
+       //         //        data = new AutorizeDataJWT(),
+       //         //        message = "Cannot Find the Matach Data"
+       //         //    };
+       //         //}
+       //         //else
+       //         //{
+       //         //    //Model.CRMMobile.UserLogin userLogin = _UserRepository.GetUserLoginByID_Mobile(cSUserProfile.UserLoginID);
+       //         //    //string GenerateAccessToken = SHAHelper.ComputeHash(data.DeviceID, "SHA512", null);
+       //         //    //userLogin.UserToken = GenerateAccessToken;
+       //         //    //cSUserProfile.UserToken = GenerateAccessToken;
+       //         //    //bool UpdateUserToken = _UserRepository.UpdateCSUserLogin(userLogin);
 
-                    return new
-                    {
-                        success = true,
-                        data = cSUserProfile,
-                        message = "PIN Correct!"
-                    };
-                }
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "Internal server error :: " + ex.Message);
-            }
-        }
+       //         //    return new
+       //         //    {
+       //         //        success = true,
+       //         //        data = cSUserProfile,
+       //         //        message = "PIN Correct!"
+       //         //    };
+       //         //}
+       //     }
+       //     catch (Exception ex)
+       //     {
+       //         return StatusCode(500, "Internal server error :: " + ex.Message);
+       //     }
+       // }
 
         [ApiExplorerSettings(IgnoreApi = true)]
         public string generateToken(string PhoneNumber)
