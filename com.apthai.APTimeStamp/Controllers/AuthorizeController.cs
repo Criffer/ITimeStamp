@@ -142,58 +142,58 @@ namespace com.apthai.APTimeStamp.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("CheckIN")]
-        [SwaggerOperation(Summary = "Register User เพื่อใช่ระบบ ซึ่งจะไป หาข้อมูลจากระบบ CRM",
-       Description = "Access Key ใช้ในการเรียหใช้ Function ต่างๆ เพื่อไม่ให้ User Login หลายเครื่องในเวลาเดียวกัน")]
-        public async Task<object> PostCheckIn([FromBody]CheckPinParam data)
-        {
-            try
-            {
-                StringValues api_key;
-                StringValues EmpCode;
+       // [HttpPost]
+       // [Route("CheckIN")]
+       // [SwaggerOperation(Summary = "Register User เพื่อใช่ระบบ ซึ่งจะไป หาข้อมูลจากระบบ CRM",
+       //Description = "Access Key ใช้ในการเรียหใช้ Function ต่างๆ เพื่อไม่ให้ User Login หลายเครื่องในเวลาเดียวกัน")]
+       // public async Task<object> PostCheckIn([FromBody]CheckPinParam data)
+       // {
+       //     try
+       //     {
+       //         StringValues api_key;
+       //         StringValues EmpCode;
 
-                //Model.CRMWeb.Contact cRMContact = _UserRepository.GetCRMContactByIDCardNO(data.CitizenIdentityNo);
-                //if (cRMContact == null)
-                //{
-                //    return new
-                //    {
-                //        success = false,
-                //        data = new AutorizeDataJWT(),
-                //        message = "Only AP Customer Can Regist to the System !!"
-                //    };
-                //}
-                //VerifyPINReturnObj cSUserProfile = _UserRepository.GetUserLogin_Mobile(data.PINCode, data.AccessKey);
-                //if (cSUserProfile == null)
-                //{
-                //    return new
-                //    {
-                //        success = false,
-                //        data = new AutorizeDataJWT(),
-                //        message = "Cannot Find the Matach Data"
-                //    };
-                //}
-                //else
-                //{
-                //    //Model.CRMMobile.UserLogin userLogin = _UserRepository.GetUserLoginByID_Mobile(cSUserProfile.UserLoginID);
-                //    //string GenerateAccessToken = SHAHelper.ComputeHash(data.DeviceID, "SHA512", null);
-                //    //userLogin.UserToken = GenerateAccessToken;
-                //    //cSUserProfile.UserToken = GenerateAccessToken;
-                //    //bool UpdateUserToken = _UserRepository.UpdateCSUserLogin(userLogin);
+       //         //Model.CRMWeb.Contact cRMContact = _UserRepository.GetCRMContactByIDCardNO(data.CitizenIdentityNo);
+       //         //if (cRMContact == null)
+       //         //{
+       //         //    return new
+       //         //    {
+       //         //        success = false,
+       //         //        data = new AutorizeDataJWT(),
+       //         //        message = "Only AP Customer Can Regist to the System !!"
+       //         //    };
+       //         //}
+       //         //VerifyPINReturnObj cSUserProfile = _UserRepository.GetUserLogin_Mobile(data.PINCode, data.AccessKey);
+       //         //if (cSUserProfile == null)
+       //         //{
+       //         //    return new
+       //         //    {
+       //         //        success = false,
+       //         //        data = new AutorizeDataJWT(),
+       //         //        message = "Cannot Find the Matach Data"
+       //         //    };
+       //         //}
+       //         //else
+       //         //{
+       //         //    //Model.CRMMobile.UserLogin userLogin = _UserRepository.GetUserLoginByID_Mobile(cSUserProfile.UserLoginID);
+       //         //    //string GenerateAccessToken = SHAHelper.ComputeHash(data.DeviceID, "SHA512", null);
+       //         //    //userLogin.UserToken = GenerateAccessToken;
+       //         //    //cSUserProfile.UserToken = GenerateAccessToken;
+       //         //    //bool UpdateUserToken = _UserRepository.UpdateCSUserLogin(userLogin);
 
-                return new
-                {
-                    success = true,
-                    data = cSUserProfile,
-                    message = "PIN Correct!"
-                };
-                //}
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "Internal server error :: " + ex.Message);
-            }
-        }
+       //         return new
+       //         {
+       //             success = true,
+       //             data = cSUserProfile,
+       //             message = "PIN Correct!"
+       //         };
+       //         //}
+       //     }
+       //     catch (Exception ex)
+       //     {
+       //         return StatusCode(500, "Internal server error :: " + ex.Message);
+       //     }
+       // }
 
         [ApiExplorerSettings(IgnoreApi = true)]
         public string generateToken(string DeviceID)
