@@ -8,9 +8,26 @@ using System;
 using Dapper.Contrib.Extensions;
 using System.Collections.Generic;
 
-namespace com.apthai.APTimeStamp.Model.APFamilyModel
+namespace com.apthai.APTimeStamp.Model.APFamily
 {
   
+
+   [Table("HangFire.AggregatedCounter")]
+    public partial class AggregatedCounter
+    {
+        [ExplicitKey]
+        public string Key { get; set; }
+        public long Value { get; set; }
+        public DateTime? ExpireAt { get; set; }
+    }
+
+   [Table("HangFire.Counter")]
+    public partial class Counter
+    {
+        public string Key { get; set; }
+        public int Value { get; set; }
+        public DateTime? ExpireAt { get; set; }
+    }
 
    [Table("EmpProfile")]
     public partial class EmpProfile
@@ -22,5 +39,98 @@ namespace com.apthai.APTimeStamp.Model.APFamilyModel
         public string EmpLastName { get; set; }
         public string PositionName { get; set; }
         public string EMail { get; set; }
+        public bool? Notification { get; set; }
+        public string EmpLoginToken { get; set; }
+        public DateTime? EmpTokenExpire { get; set; }
+    }
+
+   [Table("HangFire.Hash")]
+    public partial class Hash
+    {
+        [ExplicitKey]
+        public string Key { get; set; }
+        public string Field { get; set; }
+        public string Value { get; set; }
+        public string ExpireAt { get; set; }
+    }
+
+   [Table("HangFire.Job")]
+    public partial class Job
+    {
+        [Key]
+        public long Id { get; set; }
+        public long? StateId { get; set; }
+        public string StateName { get; set; }
+        public string InvocationData { get; set; }
+        public string Arguments { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? ExpireAt { get; set; }
+    }
+
+   [Table("HangFire.JobParameter")]
+    public partial class JobParameter
+    {
+        [ExplicitKey]
+        public long JobId { get; set; }
+        public string Name { get; set; }
+        public string Value { get; set; }
+    }
+
+   [Table("HangFire.JobQueue")]
+    public partial class JobQueue
+    {
+        [Key]
+        public int Id { get; set; }
+        public long JobId { get; set; }
+        public string Queue { get; set; }
+        public DateTime? FetchedAt { get; set; }
+    }
+
+   [Table("HangFire.List")]
+    public partial class List
+    {
+        [Key]
+        public long Id { get; set; }
+        public string Key { get; set; }
+        public string Value { get; set; }
+        public DateTime? ExpireAt { get; set; }
+    }
+
+   [Table("HangFire.Schema")]
+    public partial class Schema
+    {
+        [ExplicitKey]
+        public int Version { get; set; }
+    }
+
+   [Table("HangFire.Server")]
+    public partial class Server
+    {
+        [ExplicitKey]
+        public string Id { get; set; }
+        public string Data { get; set; }
+        public DateTime LastHeartbeat { get; set; }
+    }
+
+   [Table("HangFire.Set")]
+    public partial class Set
+    {
+        [ExplicitKey]
+        public string Key { get; set; }
+        public double Score { get; set; }
+        public string Value { get; set; }
+        public DateTime? ExpireAt { get; set; }
+    }
+
+   [Table("HangFire.State")]
+    public partial class State
+    {
+        [Key]
+        public long Id { get; set; }
+        public long JobId { get; set; }
+        public string Name { get; set; }
+        public string Reason { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string Data { get; set; }
     }
 }

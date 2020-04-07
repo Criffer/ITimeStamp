@@ -33,178 +33,172 @@ namespace com.apthai.APTimeStamp.Controllers
             _masterRepo = masterRepo;
             _authorizeService = authorizeService;
             _UserRepository = userRepository;
+
         }
 
-       // [HttpPost]
-       // [Route("login")]
-       // [SwaggerOperation(Summary = "Log In เข้าสู้ระบบเพื่อรับ Access Key ",
-       // Description = "Access Key ใช้ในการเรียหใช้ Function ต่างๆ เพื่อไม่ให้ User Login หลายเครื่องในเวลาเดียวกัน")]
-       // public async Task<object> PostLogin([FromBody] LoginData data)
-       // {
-       //     try
-       //     {
-       //         var userName = data.UserName;
-       //         var password = data.Password;
-       //         var appCode = data.AppCode;
+        [HttpPost]
+        [Route("login")]
+        [SwaggerOperation(Summary = "Log In เข้าสู้ระบบเพื่อรับ Access Key ",
+        Description = "Access Key ใช้ในการเรียหใช้ Function ต่างๆ เพื่อไม่ให้ User Login หลายเครื่องในเวลาเดียวกัน")]
+        public async Task<object> PostLogin([FromBody] LoginData data)
+        {
+            try
+            {
+                var userName = data.UserName;
+                var password = data.Password;
+                var appCode = data.AppCode;
 
-       //         string APApiKey = Environment.GetEnvironmentVariable("API_Key");
-       //         if (APApiKey == null)
-       //         {
-       //             APApiKey = UtilsProvider.AppSetting.ApiKey;
-       //         }
-       //         string APApiToken = Environment.GetEnvironmentVariable("Api_Token");
-       //         if (APApiToken == null)
-       //         {
-       //             APApiToken = UtilsProvider.AppSetting.ApiToken;
-       //         }
+                string APApiKey = Environment.GetEnvironmentVariable("API_Key");
+                if (APApiKey == null)
+                {
+                    APApiKey = UtilsProvider.AppSetting.ApiKey;
+                }
 
-       //         var client = new HttpClient();
-       //         var Content = new StringContent(JsonConvert.SerializeObject(data));
-       //         Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-       //         Content.Headers.Add("api_key", APApiKey);
-       //         Content.Headers.Add("api_token", APApiToken);
-       //         string PostURL = Environment.GetEnvironmentVariable("AuthenticationURL");
-       //         if (PostURL == null)
-       //         {
-       //             PostURL = UtilsProvider.AppSetting.AuthorizeURL;
-       //         }
-       //         var Respond = await client.PostAsync(PostURL, Content);
-       //         if (Respond.StatusCode != System.Net.HttpStatusCode.OK)
-       //         {
-       //             return new
-       //             {
-       //                 success = false,
-       //                 data = new AutorizeDataJWT(),
-       //                 valid = false
-       //             };
-       //         }
-       //         var RespondData = await Respond.Content.ReadAsStringAsync();
-       //         var Result = JsonConvert.DeserializeObject<AutorizeDataJWT>(RespondData);
-       //         if (Result.LoginResult == false)
-       //         {
-       //             return new
-       //             {
-       //                 success = false,
-       //                 data = Result.LoginResultMessage,
-       //                 valid = false
-       //             };
-       //         }
+                var client = new HttpClient();
+                var Content = new StringContent(JsonConvert.SerializeObject(data));
+                Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                Content.Headers.Add("api_key", APApiKey);
+                string PostURL = Environment.GetEnvironmentVariable("AuthenticationURL");
+                if (PostURL == null)
+                {
+                    PostURL = UtilsProvider.AppSetting.AuthorizeURL;
+                }
+                var Respond = await client.PostAsync(PostURL, Content);
+                if (Respond.StatusCode != System.Net.HttpStatusCode.OK)
+                {
+                    return new
+                    {
+                        success = false,
+                        data = new AutorizeDataJWT(),
+                        Message = "ser Authentication Fail"
+                    };
+                }
+                var RespondData = await Respond.Content.ReadAsStringAsync();
+                var Result = JsonConvert.DeserializeObject<AutorizeDataJWT>(RespondData);
+                if (Result.LoginResult == false)
+                {
+                    return new
+                    {
+                        success = false,
+                        data = new AutorizeDataJWT(),
+                        Message = Result.LoginResultMessage
+                    };
+                }
 
-       //         Model.APFamilyModel.EmpProfile empProfile = _UserRepository.GetEmpProfile(Result.EmployeeID);
-       //         if (empProfile == null)
-       //         {
-       //             Model.APFamilyModel.EmpProfile emp = new Model.APFamilyModel.EmpProfile();
-       //             emp.EmpCode = Result.EmployeeID;
-       //             emp.EmpDeviceID = data.DeviceID;
-       //             emp.EmpName = Result.FirstName;
-       //             emp.EmpLastName = Result.LastName;
-       //             emp.PositionName = Result.Division;
-       //             emp.EMail = Result.Email;
-       //         }
-       //         else
-       //         {
-       //             if (data.DeviceID == empProfile.EmpDeviceID)
-       //             {
+                Model.APFamily.EmpProfile empProfile = _UserRepository.GetEmpProfile(Result.EmployeeID);
+                if (empProfile == null)
+                {
+                    Model.APFamily.EmpProfile emp = new Model.APFamily.EmpProfile();
+                    emp.EmpCode = Result.EmployeeID;
+                    emp.EmpDeviceID = data.DeviceID;
+                    emp.EmpName = Result.FirstName;
+                    emp.EmpLastName = Result.LastName;
+                    emp.PositionName = Result.Division;
+                    emp.EMail = Result.Email;
+                    emp.EmpLoginToken = generateToken(data.DeviceID);
 
-       //             }
-       //         }
-       //         //AccessKeyControl AC = _UserRepository.GetUserAccessKey(Result.EmployeeID);
-       //         //if (AC == null)
-       //         //{
-       //         //    AccessKeyControl accessKeyControl = new AccessKeyControl();
-       //         //    accessKeyControl.EmpCode = Result.EmployeeID;
-       //         //    accessKeyControl.AccessKey = generateAccessKey(Result.EmployeeID);
-       //         //    accessKeyControl.LoginDate = DateTime.Now;
+                    bool InsertEmpData = _UserRepository.InsertEmpProfile(emp);
 
-       //         //    bool Insert = _UserRepository.InsertUserAccessKey(accessKeyControl);
+                    return new
+                    {
+                        success = true,
+                        data = emp,
+                        Token = emp.EmpLoginToken,
+                        Message = "LogIn Success!"
+                    };
 
-       //         //    return new
-       //         //    {
-       //         //        success = true,
-       //         //        data = Result,
-       //         //        AccessKey = accessKeyControl.AccessKey,
-       //         //        valid = false
-       //         //    };
-       //         //}
-       //         //else
-       //         //{
-       //         //    AC.AccessKey = generateAccessKey(Result.EmployeeID);
-       //         //    AC.LoginDate = DateTime.Now;
+                }
+                else
+                {
+                    if (data.DeviceID == empProfile.EmpDeviceID)
+                    {
+                        DateTime ExtainToken = Convert.ToDateTime(empProfile).AddDays(15);
+                        empProfile.EmpTokenExpire = ExtainToken;
 
-       //         //    bool Update = _UserRepository.UpdateUserAccessKey(AC);
+                        bool updateProfile = _UserRepository.UpdateEmpProfile(empProfile);
+                    }
+                    else
+                    {
+                        return new
+                        {
+                            success = false,
+                            data = empProfile = new Model.APFamily.EmpProfile(),
+                            Token = "",
+                            Message = "You Have Change you Device! Please Contact IT Admin for further Use!"
+                        };
+                    }
+                }
 
-       //         //    return new
-       //         //    {
-       //         //        success = true,
-       //         //        data = Result,
-       //         //        AccessKey = AC.AccessKey,
-       //         //        valid = false
-       //         //    };
-       //         //}
-       //     }
-       //     catch (Exception ex)
-       //     {
-       //         return StatusCode(500, "Internal server error :: " + ex.Message);
-       //     }
-       // }
+                return new
+                {
+                    success = false,
+                    data = new AutorizeDataJWT(),
+                    Message = Result.LoginResultMessage
+                };
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error :: " + ex.Message);
+            }
+        }
 
-       // [HttpPost]
-       // [Route("CheckPIN")]
-       // [SwaggerOperation(Summary = "Register User เพื่อใช่ระบบ ซึ่งจะไป หาข้อมูลจากระบบ CRM",
-       //Description = "Access Key ใช้ในการเรียหใช้ Function ต่างๆ เพื่อไม่ให้ User Login หลายเครื่องในเวลาเดียวกัน")]
-       // public async Task<object> PostLogin([FromBody]CheckPinParam data)
-       // {
-       //     try
-       //     {
-       //         StringValues api_key;
-       //         StringValues EmpCode;
+        [HttpPost]
+        [Route("CheckIN")]
+        [SwaggerOperation(Summary = "Register User เพื่อใช่ระบบ ซึ่งจะไป หาข้อมูลจากระบบ CRM",
+       Description = "Access Key ใช้ในการเรียหใช้ Function ต่างๆ เพื่อไม่ให้ User Login หลายเครื่องในเวลาเดียวกัน")]
+        public async Task<object> PostCheckIn([FromBody]CheckPinParam data)
+        {
+            try
+            {
+                StringValues api_key;
+                StringValues EmpCode;
 
-       //         //Model.CRMWeb.Contact cRMContact = _UserRepository.GetCRMContactByIDCardNO(data.CitizenIdentityNo);
-       //         //if (cRMContact == null)
-       //         //{
-       //         //    return new
-       //         //    {
-       //         //        success = false,
-       //         //        data = new AutorizeDataJWT(),
-       //         //        message = "Only AP Customer Can Regist to the System !!"
-       //         //    };
-       //         //}
-       //         //VerifyPINReturnObj cSUserProfile = _UserRepository.GetUserLogin_Mobile(data.PINCode, data.AccessKey);
-       //         //if (cSUserProfile == null)
-       //         //{
-       //         //    return new
-       //         //    {
-       //         //        success = false,
-       //         //        data = new AutorizeDataJWT(),
-       //         //        message = "Cannot Find the Matach Data"
-       //         //    };
-       //         //}
-       //         //else
-       //         //{
-       //         //    //Model.CRMMobile.UserLogin userLogin = _UserRepository.GetUserLoginByID_Mobile(cSUserProfile.UserLoginID);
-       //         //    //string GenerateAccessToken = SHAHelper.ComputeHash(data.DeviceID, "SHA512", null);
-       //         //    //userLogin.UserToken = GenerateAccessToken;
-       //         //    //cSUserProfile.UserToken = GenerateAccessToken;
-       //         //    //bool UpdateUserToken = _UserRepository.UpdateCSUserLogin(userLogin);
+                //Model.CRMWeb.Contact cRMContact = _UserRepository.GetCRMContactByIDCardNO(data.CitizenIdentityNo);
+                //if (cRMContact == null)
+                //{
+                //    return new
+                //    {
+                //        success = false,
+                //        data = new AutorizeDataJWT(),
+                //        message = "Only AP Customer Can Regist to the System !!"
+                //    };
+                //}
+                //VerifyPINReturnObj cSUserProfile = _UserRepository.GetUserLogin_Mobile(data.PINCode, data.AccessKey);
+                //if (cSUserProfile == null)
+                //{
+                //    return new
+                //    {
+                //        success = false,
+                //        data = new AutorizeDataJWT(),
+                //        message = "Cannot Find the Matach Data"
+                //    };
+                //}
+                //else
+                //{
+                //    //Model.CRMMobile.UserLogin userLogin = _UserRepository.GetUserLoginByID_Mobile(cSUserProfile.UserLoginID);
+                //    //string GenerateAccessToken = SHAHelper.ComputeHash(data.DeviceID, "SHA512", null);
+                //    //userLogin.UserToken = GenerateAccessToken;
+                //    //cSUserProfile.UserToken = GenerateAccessToken;
+                //    //bool UpdateUserToken = _UserRepository.UpdateCSUserLogin(userLogin);
 
-       //         //    return new
-       //         //    {
-       //         //        success = true,
-       //         //        data = cSUserProfile,
-       //         //        message = "PIN Correct!"
-       //         //    };
-       //         //}
-       //     }
-       //     catch (Exception ex)
-       //     {
-       //         return StatusCode(500, "Internal server error :: " + ex.Message);
-       //     }
-       // }
+                return new
+                {
+                    success = true,
+                    data = cSUserProfile,
+                    message = "PIN Correct!"
+                };
+                //}
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error :: " + ex.Message);
+            }
+        }
 
         [ApiExplorerSettings(IgnoreApi = true)]
-        public string generateToken(string PhoneNumber)
+        public string generateToken(string DeviceID)
         {
-            return string.Format("{0}_{1:N}", PhoneNumber, Guid.NewGuid());
+            return string.Format("{0}_{1:N}", DeviceID, Guid.NewGuid());
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]

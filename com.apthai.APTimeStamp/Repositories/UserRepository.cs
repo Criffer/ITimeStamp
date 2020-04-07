@@ -28,37 +28,56 @@ namespace com.apthai.APTimeStamp.Repositories
 
         }
         //---------------- Log In Module --------------------------------------
-        public Model.APFamilyModel.EmpProfile GetEmpProfile(string EmpCode)
+        public Model.APFamily.EmpProfile GetEmpProfile(string EmpCode)
         {
             using (IDbConnection conn = WebConnection)
             {
                 conn.Open();
-                var result = conn.Query<Model.APFamilyModel.EmpProfile>("select * from EmpProfile WITH(NOLOCK) " +
+                var result = conn.Query<Model.APFamily.EmpProfile>("select * from EmpProfile WITH(NOLOCK) " +
                     "where EmpCode=@EmpCode", new { EmpCode = EmpCode }).FirstOrDefault();
 
                 return result;
             }
         }
-        
-        //public bool UpdateCSUserLogin(Model.CRMMobile.UserLogin data)
-        //{
-        //    using (IDbConnection conn = MobileConnection)
-        //    {
-        //        try
-        //        {
-        //            conn.Open();
-        //            var tran = conn.BeginTransaction(IsolationLevel.ReadUncommitted);
-        //            var result = conn.Insert(data, tran);
-        //            tran.Commit();
 
-        //            return true;
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("MasterRepository.InsertCSUserProfile() :: Error ", ex);
-        //        }
-        //    }
-        //}
+        public bool InsertEmpProfile(Model.APFamily.EmpProfile data)
+        {
+            using (IDbConnection conn = MobileConnection)
+            {
+                try
+                {
+                    conn.Open();
+                    var tran = conn.BeginTransaction(IsolationLevel.ReadUncommitted);
+                    var result = conn.Insert(data, tran);
+                    tran.Commit();
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("MasterRepository.InsertEmpProfile() :: Error ", ex);
+                }
+            }
+        }
+        public bool UpdateEmpProfile(Model.APFamily.EmpProfile data)
+        {
+            using (IDbConnection conn = MobileConnection)
+            {
+                try
+                {
+                    conn.Open();
+                    var tran = conn.BeginTransaction(IsolationLevel.ReadUncommitted);
+                    var result = conn.Update(data, tran);
+                    tran.Commit();
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("MasterRepository.InsertEmpProfile() :: Error ", ex);
+                }
+            }
+        }
         //---------------------------------------------------------------------
     }
 

@@ -7,9 +7,9 @@ namespace com.apthai.APTimeStamp.Repositories
 {
     public interface IUserRepository
     {
-        Model.APFamilyModel.EmpProfile GetEmpProfile(string EmpCode);
-
-
+        Model.APFamily.EmpProfile GetEmpProfile(string EmpCode);
+        bool InsertEmpProfile(Model.APFamily.EmpProfile data);
+        bool UpdateEmpProfile(Model.APFamily.EmpProfile data);
 
     }
 }
