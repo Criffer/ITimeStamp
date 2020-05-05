@@ -40,7 +40,7 @@ namespace com.apthai.APTimeStamp.Controllers
         [Route("GetAllBeaConData")]
         [SwaggerOperation(Summary = "เรียกดูเบอร์โทรศัพท์ของลูกค้าจากระบบ CRM ทั้งหมด",
        Description = "Access Key ใช้ในการเรียหใช้ Function ถึงจะเรียกใช้ Function ได้")]
-        public async Task<object> GetAllBeaConData([FromBody]GetUserPhoneParam data)
+        public async Task<object> GetAllBeaConData([FromBody]GetBeaconDataParam data)
         {
             try
             {
@@ -66,7 +66,35 @@ namespace com.apthai.APTimeStamp.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("CheckInHistory")]
+        [SwaggerOperation(Summary = "เรียกดูเบอร์โทรศัพท์ของลูกค้าจากระบบ CRM ทั้งหมด",
+       Description = "Access Key ใช้ในการเรียหใช้ Function ถึงจะเรียกใช้ Function ได้")]
+        public async Task<object> CheckInHistory([FromBody]CheckInHistoryParam data)
+        {
+            try
+            {
+                StringValues api_key;
+                StringValues EmpCode;
+                List<CheckinHistoty> beaconDatas = _UserRepository.GetCheckinHistories(data.EmpCode,data.Days);
 
+                return new
+                {
+                    success = true,
+                    data = beaconDatas,
+                    Message = "Success!"
+                };
+            }
+            catch
+            {
+                return new
+                {
+                    success = false,
+                    data = new ManagementBeacon(),
+                    Message = "Fail to get BeaconData! Please Contact Admin!"
+                };
+            }
+        }
 
         [ApiExplorerSettings(IgnoreApi = true)]
         public string generateToken(string PhoneNumber)

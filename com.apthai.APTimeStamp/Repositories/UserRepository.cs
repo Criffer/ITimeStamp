@@ -98,6 +98,29 @@ namespace com.apthai.APTimeStamp.Repositories
             }
         }
         //---------------------------------------------------------------------
+        //---------------- Get LogIn History ----------------------------------
+        public List<Model.APFamily.CheckinHistoty> GetCheckinHistories(string EmpCode,int days)
+        {
+            using (IDbConnection conn = WebConnection)
+            {
+                conn.Open();
+                if (days > 0)
+                {
+                    // Patition data SQL Query still not done
+                    var result = conn.Query<Model.APFamily.CheckinHistoty>("select * from CheckinHistoty WITH(NOLOCK) " +
+                    "where EmpID=@EmpCode", new { EmpCode = EmpCode }).ToList();
+
+                    return result;
+                }
+                else
+                {
+                    var result = conn.Query<Model.APFamily.CheckinHistoty>("select * from CheckinHistoty WITH(NOLOCK) " +
+                    "where EmpID=@EmpCode", new { EmpCode = EmpCode }).ToList();
+
+                    return result;
+                }
+            }
+        }
     }
 
 }

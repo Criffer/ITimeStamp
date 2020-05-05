@@ -31,9 +31,14 @@ namespace com.apthai.APTimeStamp.HttpRestModel
         public string AccessKey { get; set; }
         public string DeviceID { get; set; }
     }
-    public partial class GetUserPhoneParam
+    public partial class CheckInHistoryParam
     {
-        public string CitizenIdentityNo { get; set; }
+        public string EmpCode { get; set; }
+        public int Days { get; set; }
+    }
+    public partial class GetBeaconDataParam
+    {
+        public string BeaconID { get; set; }
     }
     public class AutorizeDataJWT
     {
