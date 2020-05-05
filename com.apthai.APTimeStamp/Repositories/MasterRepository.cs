@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using Dapper.Contrib.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using com.apthai.APTimeStamp.CustomModel;
+using com.apthai.APTimeStamp.Model.APFamily;
 
 namespace com.apthai.APTimeStamp.Repositories
 {
@@ -37,31 +38,23 @@ namespace com.apthai.APTimeStamp.Repositories
             return c;
         }
 
-        //public List<callarea> GetCallAreaByProductCat_Sync(string ProductTypeCate)
-        //{
-        //    using (IDbConnection conn = WebConnection)
-        //    {
-        //        try
-        //        {
-        //            if (ProductTypeCate == null || ProductTypeCate == "")
-        //            {
-        //                string sQuery = "Select * From callarea where Active = 1 ";
-        //                var result = conn.Query<callarea>(sQuery).ToList();
-        //                return result;
-        //            }
-        //            else
-        //            {
-        //                string sQuery = "Select * From callarea where ProductTypeCate = @ProductTypeCate And Active = 1 ";
-        //                var result = conn.Query<callarea>(sQuery, new { ProductTypeCate = ProductTypeCate }).ToList();
-        //                return result;
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("MasterRepository.GetCallAreaByProductCat_Sync() :: Error ", ex);
-        //        }
-        //    }
-        //}
+        public List<ManagementBeacon> GetAllBeaconDatas()
+        {
+            using (IDbConnection conn = WebConnection)
+            {
+                try
+                {
+                        string sQuery = "Select * From ManagementBeacons where IsActiveBeacons = 1 ";
+                        var result = conn.Query<ManagementBeacon>(sQuery).ToList();
+                        return result;
+                   
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("MasterRepository.GetAllBeaconDatas() :: Error ", ex);
+                }
+            }
+        }
         //public List<calltype> GetCallCallType_Sync()
         //{
         //    using (IDbConnection conn = WebConnection)

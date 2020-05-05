@@ -21,27 +21,43 @@ namespace com.apthai.APTimeStamp.Model.APFamily
         public DateTime? ExpireAt { get; set; }
     }
 
+   [Table("CheckinHistoty")]
+    public partial class CheckinHistoty
+    {
+        public int CheckinID { get; set; }
+        public int EmpID { get; set; }
+        public DateTime CheckinDateTime { get; set; }
+        public string BeaconsID { get; set; }
+        public string EmpDeviceID { get; set; }
+        public string LatitudeCheckin { get; set; }
+        public string LongitudeCheckin { get; set; }
+        public int? ProjectID { get; set; }
+        public string ProjectCode { get; set; }
+        public string ProjectName { get; set; }
+        public string CreateBy { get; set; }
+        public DateTime CreateDate { get; set; }
+        public string UpdateBy { get; set; }
+        public DateTime? UpdateDate { get; set; }
+    }
+
+   [Table("CheckinPhoto")]
+    public partial class CheckinPhoto
+    {
+        public int PhotoID { get; set; }
+        public int CheckinID { get; set; }
+        public string PhotoURL { get; set; }
+        public string CreateBy { get; set; }
+        public DateTime CreateDate { get; set; }
+        public string UpdateBy { get; set; }
+        public DateTime? UpdateDate { get; set; }
+    }
+
    [Table("HangFire.Counter")]
     public partial class Counter
     {
         public string Key { get; set; }
         public int Value { get; set; }
         public DateTime? ExpireAt { get; set; }
-    }
-
-   [Table("EmpProfile")]
-    public partial class EmpProfile
-    {
-        public int? EmpID { get; set; }
-        public string EmpCode { get; set; }
-        public string EmpDeviceID { get; set; }
-        public string EmpName { get; set; }
-        public string EmpLastName { get; set; }
-        public string PositionName { get; set; }
-        public string EMail { get; set; }
-        public bool? Notification { get; set; }
-        public string EmpLoginToken { get; set; }
-        public DateTime? EmpTokenExpire { get; set; }
     }
 
    [Table("HangFire.Hash")]
@@ -94,6 +110,204 @@ namespace com.apthai.APTimeStamp.Model.APFamily
         public string Key { get; set; }
         public string Value { get; set; }
         public DateTime? ExpireAt { get; set; }
+    }
+
+   [Table("ManagementBeacons")]
+    public partial class ManagementBeacon
+    {
+        public int ManagementID { get; set; }
+        public string BeaconsID { get; set; }
+        public string BeaconsName { get; set; }
+        public string Latitude { get; set; }
+        public string Longitude { get; set; }
+        public int? CompanyID { get; set; }
+        public string CompanyCode { get; set; }
+        public string CompanyName { get; set; }
+        public int? ProjectID { get; set; }
+        public string ProjectCode { get; set; }
+        public string ProjectName { get; set; }
+        public bool IsActiveBeacons { get; set; }
+        public string Remark { get; set; }
+        public string CreateBy { get; set; }
+        public DateTime CreateDate { get; set; }
+        public string UpdateBy { get; set; }
+        public DateTime? UpdateDate { get; set; }
+    }
+
+   [Table("ManagementDeviceVersion")]
+    public partial class ManagementDeviceVersion
+    {
+        public int ManagementVersionID { get; set; }
+        public string Version { get; set; }
+        public string DeviceType { get; set; }
+        public string DeviceBrand { get; set; }
+        public string Remark { get; set; }
+        public string CreateBy { get; set; }
+        public DateTime CreateDate { get; set; }
+        public string UpdateBy { get; set; }
+        public DateTime? UpdateDate { get; set; }
+    }
+
+   [Table("ManagementGRDetail")]
+    public partial class ManagementGRDetail
+    {
+        public int GRDetailID { get; set; }
+        public int GRHeaderID { get; set; }
+        public string ItemCode { get; set; }
+        public string SerialNo { get; set; }
+        public string ItemName { get; set; }
+        public decimal PricePerUnit { get; set; }
+        public decimal Vat { get; set; }
+        public decimal AmountIncVat { get; set; }
+        public int Quantity { get; set; }
+        public decimal? Discount { get; set; }
+        public decimal TotalAmount { get; set; }
+        public bool? IsWarranty { get; set; }
+        public int? WarrantyYear { get; set; }
+        public DateTime? WarrantyStart { get; set; }
+        public DateTime? WarrantyEnd { get; set; }
+        public string Remark { get; set; }
+        public DateTime? ExpireDate { get; set; }
+        public string CreateBy { get; set; }
+        public DateTime CreateDate { get; set; }
+        public string UpdateBy { get; set; }
+        public DateTime? UpdateDate { get; set; }
+    }
+
+   [Table("ManagementGRHeader")]
+    public partial class ManagementGRHeader
+    {
+        public int GRHeaderID { get; set; }
+        public int QuotationHeaderID { get; set; }
+        public string GRNo { get; set; }
+        public DateTime RecieptDate { get; set; }
+        public string Remark { get; set; }
+        public DateTime? ExpireDate { get; set; }
+        public string CreateBy { get; set; }
+        public DateTime CreateDate { get; set; }
+        public string UpdateBy { get; set; }
+        public DateTime? UpdateDate { get; set; }
+    }
+
+   [Table("ManagementQuotationDetail")]
+    public partial class ManagementQuotationDetail
+    {
+        public int QuotationDetailID { get; set; }
+        public int QuotationHeaderID { get; set; }
+        public string ItemCode { get; set; }
+        public string SerialNo { get; set; }
+        public string ItemName { get; set; }
+        public decimal PricePerUnit { get; set; }
+        public decimal Vat { get; set; }
+        public decimal AmountIncVat { get; set; }
+        public int Quantity { get; set; }
+        public decimal? Discount { get; set; }
+        public decimal TotalAmount { get; set; }
+        public bool? IsWarranty { get; set; }
+        public int? WarrantyYear { get; set; }
+        public DateTime? WarrantyStart { get; set; }
+        public DateTime? WarrantyEnd { get; set; }
+        public string Remark { get; set; }
+        public DateTime? ExpireDate { get; set; }
+        public string CreateBy { get; set; }
+        public DateTime CreateDate { get; set; }
+        public string UpdateBy { get; set; }
+        public DateTime? UpdateDate { get; set; }
+    }
+
+   [Table("ManagementQuotationHeader")]
+    public partial class ManagementQuotationHeader
+    {
+        public int QuotationHeaderID { get; set; }
+        public DateTime QuotationDate { get; set; }
+        public DateTime? ValidDateFrom { get; set; }
+        public DateTime? ValidDateTo { get; set; }
+        public DateTime? DeliveryDate { get; set; }
+        public string SellerFullName { get; set; }
+        public string SellerEmail { get; set; }
+        public string SellerMobilePhoneNo { get; set; }
+        public string SellerPhoneNo { get; set; }
+        public string SellerCompanyName { get; set; }
+        public string SellerCompanyAddress { get; set; }
+        public string SellerCompanyTaxID { get; set; }
+        public string SellerCompanyWebsite { get; set; }
+        public string SellerCompanyFax { get; set; }
+        public string BuyerFullName { get; set; }
+        public string BuyerEmail { get; set; }
+        public string BuyerMobilePhoneNo { get; set; }
+        public string BuyerPhoneNo { get; set; }
+        public string BuyerCompanyName { get; set; }
+        public string BuyerCompanyAddress { get; set; }
+        public string BuyerCompanyTaxID { get; set; }
+        public string BuyerCompanyWebsite { get; set; }
+        public string BuyerCompanyFax { get; set; }
+        public string Remark { get; set; }
+        public string CreateBy { get; set; }
+        public DateTime CreateDate { get; set; }
+        public string UpdateBy { get; set; }
+        public DateTime? UpdateDate { get; set; }
+    }
+
+   [Table("NotificationForAdmin")]
+    public partial class NotificationForAdmin
+    {
+        public int NotificationForAdminID { get; set; }
+        public int BeaconsID { get; set; }
+        public string WarningMessageAdminType { get; set; }
+        public string WarningMessageAdminCode { get; set; }
+        public string WarningMessage { get; set; }
+        public string WarningMessageAdminStatus { get; set; }
+        public string ReadNotificationStatus { get; set; }
+        public int? ProjectID { get; set; }
+        public string ProjectCode { get; set; }
+        public string ProjectName { get; set; }
+        public string CreateBy { get; set; }
+        public DateTime CreateDate { get; set; }
+        public string UpdateBy { get; set; }
+        public DateTime? UpdateDate { get; set; }
+    }
+
+   [Table("RegisLoginHistory")]
+    public partial class RegisLoginHistory
+    {
+        public int VerifyID { get; set; }
+        public string EmpDeviceID { get; set; }
+        public int EmpID { get; set; }
+        public string EmpCode { get; set; }
+        public string EmpName { get; set; }
+        public string EmpLastName { get; set; }
+        public string PositionName { get; set; }
+        public string Email { get; set; }
+        public bool? Notification { get; set; }
+        public string EmpLoginToken { get; set; }
+        public DateTime? EmpTokenExpire { get; set; }
+        public string DeviceType { get; set; }
+        public string DeviceBrand { get; set; }
+        public int CompanyID { get; set; }
+        public string CompanyCode { get; set; }
+        public string CompanyName { get; set; }
+        public DateTime LoginDateTime { get; set; }
+        public DateTime? LogoutDateTime { get; set; }
+        public string CreateBy { get; set; }
+        public DateTime CreateDate { get; set; }
+        public string UpdateBy { get; set; }
+        public DateTime? UpdateDate { get; set; }
+    }
+
+   [Table("RegisLoginPhoto")]
+    public partial class RegisLoginPhoto
+    {
+        public int RegisLoginPhotoID { get; set; }
+        public int VerifyID { get; set; }
+        public string PhotoURL { get; set; }
+        public string CreateBy { get; set; }
+        public DateTime CreateDate { get; set; }
+        public string UpdateBy { get; set; }
+        public DateTime? UpdateDate { get; set; }
+        public string FilePath { get; set; }
+        public string FileName { get; set; }
+        public int? RegisHistoryID { get; set; }
+        public long? FileLength { get; set; }
     }
 
    [Table("HangFire.Schema")]

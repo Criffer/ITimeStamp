@@ -28,19 +28,19 @@ namespace com.apthai.APTimeStamp.Repositories
 
         }
         //---------------- Log In Module --------------------------------------
-        public Model.APFamily.EmpProfile GetEmpProfile(string EmpCode)
+        public Model.APFamily.RegisLoginHistory GetEmpProfile(string EmpCode)
         {
             using (IDbConnection conn = WebConnection)
             {
                 conn.Open();
-                var result = conn.Query<Model.APFamily.EmpProfile>("select * from EmpProfile WITH(NOLOCK) " +
+                var result = conn.Query<Model.APFamily.RegisLoginHistory>("select * from RegisLoginHistory WITH(NOLOCK) " +
                     "where EmpCode=@EmpCode", new { EmpCode = EmpCode }).FirstOrDefault();
 
                 return result;
             }
         }
 
-        public bool InsertEmpProfile(Model.APFamily.EmpProfile data)
+        public bool InsertEmpProfile(Model.APFamily.RegisLoginHistory data)
         {
             using (IDbConnection conn = MobileConnection)
             {
@@ -59,7 +59,7 @@ namespace com.apthai.APTimeStamp.Repositories
                 }
             }
         }
-        public bool UpdateEmpProfile(Model.APFamily.EmpProfile data)
+        public bool UpdateEmpProfile(Model.APFamily.RegisLoginHistory data)
         {
             using (IDbConnection conn = MobileConnection)
             {
@@ -75,6 +75,25 @@ namespace com.apthai.APTimeStamp.Repositories
                 catch (Exception ex)
                 {
                     throw new Exception("MasterRepository.InsertEmpProfile() :: Error ", ex);
+                }
+            }
+        }
+        public bool InsertRegisLoginPhoto(Model.APFamily.RegisLoginPhoto data)
+        {
+            using (IDbConnection conn = MobileConnection)
+            {
+                try
+                {
+                    conn.Open();
+                    var tran = conn.BeginTransaction(IsolationLevel.ReadUncommitted);
+                    var result = conn.Insert(data, tran);
+                    tran.Commit();
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("MasterRepository.InsertRegisLoginPhoto() :: Error ", ex);
                 }
             }
         }

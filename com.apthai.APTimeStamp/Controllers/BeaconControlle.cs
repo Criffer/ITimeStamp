@@ -15,19 +15,20 @@ using Newtonsoft.Json.Linq;
 using com.apthai.APTimeStamp.Repositories;
 using Swashbuckle.AspNetCore.Annotations;
 using Microsoft.Extensions.Primitives;
+using com.apthai.APTimeStamp.Model.APFamily;
 
 namespace com.apthai.APTimeStamp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserControlle : BaseController
+    public class BeaconControlle : BaseController
     {
 
 
         private readonly IMasterRepository _masterRepo;
         private readonly IAuthorizeService _authorizeService;
         private readonly IUserRepository _UserRepository;
-        public UserControlle(IMasterRepository masterRepo , IAuthorizeService authorizeService,IUserRepository userRepository)
+        public BeaconControlle(IMasterRepository masterRepo , IAuthorizeService authorizeService,IUserRepository userRepository)
         {
 
             _masterRepo = masterRepo;
@@ -35,25 +36,37 @@ namespace com.apthai.APTimeStamp.Controllers
             _UserRepository = userRepository;
         }
 
-       // [HttpPost]
-       // [Route("CheckIN")]
-       // [SwaggerOperation(Summary = "เรียกดูเบอร์โทรศัพท์ของลูกค้าจากระบบ CRM ทั้งหมด",
-       //Description = "Access Key ใช้ในการเรียหใช้ Function ถึงจะเรียกใช้ Function ได้")]
-       // public async Task<object> CheckIN([FromBody]GetUserPhoneParam data)
-       // {
-       //     try
-       //     {
-       //         StringValues api_key;
-       //         StringValues EmpCode;
-                
-       //     }
-       //     catch
-       //     {
+        [HttpPost]
+        [Route("GetAllBeaConData")]
+        [SwaggerOperation(Summary = "เรียกดูเบอร์โทรศัพท์ของลูกค้าจากระบบ CRM ทั้งหมด",
+       Description = "Access Key ใช้ในการเรียหใช้ Function ถึงจะเรียกใช้ Function ได้")]
+        public async Task<object> GetAllBeaConData([FromBody]GetUserPhoneParam data)
+        {
+            try
+            {
+                StringValues api_key;
+                StringValues EmpCode;
+                List<ManagementBeacon> beaconDatas = _masterRepo.GetAllBeaconDatas();
 
-       //     }
-       // }
+                return new
+                {
+                    success = true,
+                    data = beaconDatas,
+                    Message = "Success!"
+                };
+            }
+            catch
+            {
+                return new
+                {
+                    success = false,
+                    data = new ManagementBeacon(),
+                    Message = "Fail to get BeaconData! Please Contact Admin!"
+                };
+            }
+        }
 
-      
+
 
         [ApiExplorerSettings(IgnoreApi = true)]
         public string generateToken(string PhoneNumber)
