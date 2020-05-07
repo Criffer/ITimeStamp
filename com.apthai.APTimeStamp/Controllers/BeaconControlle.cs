@@ -77,7 +77,6 @@ namespace com.apthai.APTimeStamp.Controllers
                 StringValues api_key;
                 StringValues EmpCode;
                 List<CheckinHistoty> beaconDatas = _UserRepository.GetCheckinHistories(data.EmpCode,data.Days);
-
                 return new
                 {
                     success = true,
